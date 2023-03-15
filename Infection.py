@@ -1,34 +1,48 @@
 import random
 import time
 
-size = 500
-window = Tk()
-canvas = Canvas(window, width=size, height=size)
-canvas.pack()
+Generation = 0
+
+f = open("Infection_Settings.txt","r")
+
+X=f.readline()
+Y=f.readline()
+
+X=int(X[2:])
+Y=int(Y[2:])
+
 
 Cells=[]
 InCells=[] 
 
-for n in range(0,24): #Makes cell grid
-    for i in range(0,24):
+for n in range(0,Y): #Makes cell grid
+    for i in range(0,X):
         Cells.append("○") #○ = uninfected, ● = infected
 
-print(Cells)
+def Print_As_Grid(X,Y):
+    for n in range(len(Cells)):
+        if n % X == 0:
+            print()
+            print(Cells[n],end='')
+        else:
+            print(Cells[n],end='')
+
+Print_As_Grid(X,Y)
 input()
 
-Infected=random.randint(0,575)
+Infected=random.randint(0,len(Cells))
 Cells[Infected]='●'
 InCells.append(Infected)
 
 print("\n\n\n\n\n")
-print(Cells)
+Print_As_Grid(X,Y)
 
-while len(InCells) != 576:
+while len(InCells) != X*Y:
     for t in range(0,len(InCells)):
         time.sleep(0.2)
         CellInfecting=InCells[t]
         
-        if CellInfecting != 575:
+        if CellInfecting != X*Y-1:
             Infected = random.randint(1,4)
             if Infected == 1:
                 Cells[CellInfecting+1]="●"
@@ -36,13 +50,13 @@ while len(InCells) != 576:
                     InCells.remove(CellInfecting+1)
                 InCells.append(CellInfecting+1)
                 
-        if CellInfecting <= 551:
+        if CellInfecting <= X*Y-X:
             Infected = random.randint(1,4)
             if Infected == 2:
-                Cells[CellInfecting+24]="●"
-                if CellInfecting+24 in InCells:
-                    InCells.remove(CellInfecting+24)
-                InCells.append(CellInfecting+24)
+                Cells[CellInfecting+X]="●"
+                if CellInfecting+X in InCells:
+                    InCells.remove(CellInfecting+X)
+                InCells.append(CellInfecting+X)
                 
         if CellInfecting >= 1:
             Infected = random.randint(1,4)
@@ -52,21 +66,19 @@ while len(InCells) != 576:
                     InCells.remove(CellInfecting-1)
                 InCells.append(CellInfecting-1)
                 
-        if CellInfecting >= 25:
+        if CellInfecting >= X+1:
             Infected = random.randint(1,4)
             if Infected == 4:
-                Cells[CellInfecting-24]="●"
-                if CellInfecting-24 in InCells:
-                    InCells.remove(CellInfecting-24)
-                InCells.append(CellInfecting-24)
-                
-        
-    print("\n\n\n\n\n")
-    print(Cells)
-    print(len(InCells), "Cells infected.")
+                Cells[CellInfecting-X]="●"
+                if CellInfecting-X in InCells:
+                    InCells.remove(CellInfecting-X)
+                InCells.append(CellInfecting-X)
 
-##    for p in range(len(Cells)):
-##        PixeL=canvas.create_rectangle(PrimeList[p],PrimeList[int(p/500)],PrimeList[p],PrimeList[int(p/500)])
-##  
+    Generation += 1    
+    print("\n\n\n\n\n")
+    Print_As_Grid(X,Y)
     
+    print("\n",len(InCells), "Cells infected.")
+    print("Generation:", Generation)
+ 
 input()
