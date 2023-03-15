@@ -12,5 +12,5 @@ The max (that looks good) is X=210 Y=45
 
 Things that will be added:
 
-Cells becoming uninfected.
+Cells becoming uninfected. - working on.
 Cells being immune.
