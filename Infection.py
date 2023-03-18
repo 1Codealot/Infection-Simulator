@@ -42,7 +42,7 @@ while len(InCells) != X*Y:
         time.sleep(0.2)
         CellInfecting=InCells[t]
         
-        if CellInfecting != X*Y-1:
+        if CellInfecting != X*Y-1 and CellInfecting % X != X:
             Infected = random.randint(1,4)
             if Infected == 1:
                 Cells[CellInfecting+1]="●"
@@ -58,7 +58,7 @@ while len(InCells) != X*Y:
                     InCells.remove(CellInfecting+X)
                 InCells.append(CellInfecting+X)
                 
-        if CellInfecting >= 1:
+        if CellInfecting >= 1 and CellInfecting % X != 0:
             Infected = random.randint(1,4)
             if Infected == 3:
                 Cells[CellInfecting-1]="●"
