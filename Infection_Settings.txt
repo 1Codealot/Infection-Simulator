@@ -1,5 +1,6 @@
-X=25
-Y=25
+X=10
+Y=10
+Healing=1
+MinGensToUninfect=3
+ChanceOfHealing=5
 
-Max X=210
-Max Y=45
