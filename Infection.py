@@ -3,21 +3,31 @@ import time
 
 Generation = 0
 
+
 f = open("Infection_Settings.txt","r")
 
 X=f.readline()
 Y=f.readline()
+Healing=f.readline()
+MinGensToUninfect=f.readline()
+ChanceOfHealing=f.readline()
 
 X=int(X[2:])
 Y=int(Y[2:])
+Healing=int(Healing[8:]) #1 = True because I couldn't get srings to work and idc
+MinGensToUninfect=int(MinGensToUninfect[18:])
+ChanceOfHealing=int(ChanceOfHealing[16:])
 
-
-Cells=[]
-InCells=[] 
+Cells=[] #Main List
+InCells=[] #Place where cells were infected
+Gen_Infected=[] #Generation the cell was infected
 
 for n in range(0,Y): #Makes cell grid
     for i in range(0,X):
         Cells.append("○") #○ = uninfected, ● = infected
+        Gen_Infected.append(-1)
+        
+            
 
 def Print_As_Grid(X,Y):
     for n in range(len(Cells)):
@@ -32,6 +42,7 @@ input()
 
 Infected=random.randint(0,len(Cells))
 Cells[Infected]='●'
+Gen_Infected[Infected]=Generation
 InCells.append(Infected)
 
 print("\n\n\n\n\n")
@@ -42,7 +53,7 @@ while len(InCells) != X*Y:
         time.sleep(0.2)
         CellInfecting=InCells[t]
         
-        if CellInfecting != X*Y-1 and CellInfecting % X != X:
+        if CellInfecting != X*Y-1 and CellInfecting % X != X-1:
             Infected = random.randint(1,4)
             if Infected == 1:
                 Cells[CellInfecting+1]="●"
@@ -74,11 +85,20 @@ while len(InCells) != X*Y:
                     InCells.remove(CellInfecting-X)
                 InCells.append(CellInfecting-X)
 
+    if Healing == 1:
+        for h in InCells:
+            if Generation - Gen_Infected[h] >= MinGensToUninfect and len(InCells) >= 10:
+                if random.randint(1,ChanceOfHealing) == 1:
+                    Cells[h] = "○"
+                    Gen_Infected[h] = -1
+                    InCells.remove(h)
+    
     Generation += 1    
     print("\n\n\n\n\n")
     Print_As_Grid(X,Y)
-    
+
     print("\n",len(InCells), "Cells infected.")
     print("Generation:", Generation)
+
  
 input()
