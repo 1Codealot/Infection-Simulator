@@ -26,9 +26,7 @@ for n in range(0,Y): #Makes cell grid
     for i in range(0,X):
         Cells.append("○") #○ = uninfected, ● = infected
         Gen_Infected.append(-1)
-        
-            
-
+       
 def Print_As_Grid(X,Y):
     for n in range(len(Cells)):
         if n % X == 0:
@@ -50,7 +48,6 @@ Print_As_Grid(X,Y)
 
 while len(InCells) != X*Y:
     for t in range(0,len(InCells)):
-        time.sleep(0.2)
         CellInfecting=InCells[t]
         
         if CellInfecting != X*Y-1 and CellInfecting % X != X-1:
@@ -99,6 +96,6 @@ while len(InCells) != X*Y:
 
     print("\n",len(InCells), "Cells infected.")
     print("Generation:", Generation)
+    time.sleep(0.5)
 
- 
 input()
