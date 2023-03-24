@@ -3,4 +3,5 @@ Y=10
 Healing=1
 MinGensToUninfect=3
 ChanceOfHealing=5
-
+Immunity=1
+ImmuneCellCount=10
