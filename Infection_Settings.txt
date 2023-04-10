@@ -1,7 +1,8 @@
-X=10
-Y=10
+X=60
+Y=25
+InfectChance=4
 Healing=1
-MinGensToUninfect=3
+MinGensToUninfect=75
 ChanceOfHealing=5
-Immunity=1
-ImmuneCellCount=10
+Immunity=0
+ImmuneCellCount=12
