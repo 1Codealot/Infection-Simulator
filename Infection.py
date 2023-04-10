@@ -7,6 +7,7 @@ f = open("Infection_Settings.txt","r")
 
 X=f.readline()
 Y=f.readline()
+InfectChance=f.readline()
 Healing=f.readline()
 MinGensToUninfect=f.readline()
 ChanceOfHealing=f.readline()
@@ -15,6 +16,7 @@ ImmuneCellCount=f.readline()
 
 X=int(X[2:])
 Y=int(Y[2:])
+InfectChance=int(InfectChance[13:])
 Healing=int(Healing[8:]) #1 = True because I couldn't get srings to work and idc
 MinGensToUninfect=int(MinGensToUninfect[18:])
 ChanceOfHealing=int(ChanceOfHealing[16:])
@@ -68,7 +70,7 @@ while len(InCells) != X*Y:
         CellInfecting=InCells[t]
         
         if CellInfecting != X*Y-1 and CellInfecting % X != X-1:
-            Infected = random.randint(1,4)
+            Infected = random.randint(1,InfectChance)
             if Infected == 1 and Cells[CellInfecting+1] != "X":
                 Cells[CellInfecting+1]="●"
                 if CellInfecting+1 in InCells:
@@ -76,24 +78,24 @@ while len(InCells) != X*Y:
                 InCells.append(CellInfecting+1)
                 
         if CellInfecting <= (X*Y-X)-1:
-            Infected = random.randint(1,4)
-            if Infected == 2 and Cells[CellInfecting+X] != "X":
+            Infected = random.randint(1,InfectChance)
+            if Infected == 1 and Cells[CellInfecting+X] != "X":
                 Cells[CellInfecting+X]="●"
                 if CellInfecting+X in InCells:
                     InCells.remove(CellInfecting+X)
                 InCells.append(CellInfecting+X)
                 
         if CellInfecting >= 1 and CellInfecting % X != 0:
-            Infected = random.randint(1,4)
-            if Infected == 3 and Cells[CellInfecting-1] != "X":
+            Infected = random.randint(1,InfectChance)
+            if Infected == 1 and Cells[CellInfecting-1] != "X":
                 Cells[CellInfecting-1]="●"
                 if CellInfecting-1 in InCells:
                     InCells.remove(CellInfecting-1)
                 InCells.append(CellInfecting-1)
                 
         if CellInfecting >= X+1:
-            Infected = random.randint(1,4)
-            if Infected == 4 and Cells[CellInfecting-X] != "X":
+            Infected = random.randint(1,InfectChance)
+            if Infected == 1 and Cells[CellInfecting-X] != "X":
                 Cells[CellInfecting-X]="●"
                 if CellInfecting-X in InCells:
                     InCells.remove(CellInfecting-X)
