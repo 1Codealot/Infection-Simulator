@@ -1,18 +1,35 @@
 import random
 import time
 
-Generation = 0
+Output=True
 
-f = open("Infection_Settings.txt","r")
+try:
+    f = open("Infection_Settings.txt","r")
+    f.close()
+except:
+    f = open("Infection_Settings.txt","a")
+    f.write("X=20\n\
+Y=20\n\
+InfectChance=5\n\
+Healing=1\n\
+MinGensToUninfect=20\n\
+ChanceOfHealing=5\n\
+Immunity=1\n\
+ImmuneCellCount=12")
+    #I guess these are default settings now ¯\_(ツ)_/¯
+    f.close()
+finally:
+    f = open("Infection_Settings.txt","r")
+    X = f.readline()
+    Y = f.readline()
+    InfectChance = f.readline()
+    Healing = f.readline()
+    MinGensToUninfect = f.readline()
+    ChanceOfHealing = f.readline()
+    Immunity = f.readline()
+    ImmuneCellCount = f.readline()
 
-X=f.readline()
-Y=f.readline()
-InfectChance=f.readline()
-Healing=f.readline()
-MinGensToUninfect=f.readline()
-ChanceOfHealing=f.readline()
-Immunity=f.readline()
-ImmuneCellCount=f.readline()
+    f.close()
 
 X=int(X[2:])
 Y=int(Y[2:])
@@ -22,6 +39,8 @@ MinGensToUninfect=int(MinGensToUninfect[18:])
 ChanceOfHealing=int(ChanceOfHealing[16:])
 Immunity=int(Immunity[9:])
 ImmuneCellCount=int(ImmuneCellCount[16:])
+
+########################################################################
 
 Cells=[] #Main List
 InCells=[] #Place where cells were infected
@@ -54,18 +73,29 @@ def Print_As_Grid(X,Y):
         else:
             print(Cells[n],end='')
 
-Print_As_Grid(X,Y)
-input()
+if Output == True:
+    Print_As_Grid(X,Y)
+    Seed = input("\nMake sure the grid is the correct size. \nYou can also add type in a seed. ")
+
+if Seed != '':
+    random.seed(Seed)
 
 Infected=random.randint(0,len(Cells))
 Cells[Infected]='●'
-Gen_Infected[Infected]=Generation
+Gen_Infected[Infected]=0
 InCells.append(Infected)
 
-print("\n\n\n\n\n")
-Print_As_Grid(X,Y)
+if Output == True:
+    print("\n\n\n\n\n")
+    Print_As_Grid(X,Y)
 
-while len(InCells) != X*Y:
+def mainLoop():
+    global Generation
+    try:
+        Generation += 1
+    except:
+        Generation = 0
+
     for t in range(0,len(InCells)):
         CellInfecting=InCells[t]
         
@@ -109,12 +139,14 @@ while len(InCells) != X*Y:
                     Gen_Infected[h] = -1
                     InCells.remove(h)
     
-    Generation += 1    
-    print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
-    Print_As_Grid(X,Y)
-
-    print("\n",len(InCells), "Cells infected.")
-    print("Generation:", Generation)
+while len(InCells) != X*Y:
     time.sleep(0.35)
+    mainLoop()
+    if Output == True:   
+        print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
+        Print_As_Grid(X,Y)
+
+        print("\n",len(InCells), "Cells infected.")
+        print("Generation:", Generation)
 
 input()
