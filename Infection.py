@@ -3,16 +3,33 @@ import time
 
 Generation = 0
 
-f = open("Infection_Settings.txt","r")
+try:
+    f = open("Infection_Settings.txt","r")
+    f.close()
+except:
+    f = open("Infection_Settings.txt","a")
+    f.write("X=20\n\
+Y=20\n\
+InfectChance=5\n\
+Healing=1\n\
+MinGensToUninfect=20\n\
+ChanceOfHealing=5\n\
+Immunity=1\n\
+ImmuneCellCount=12")
+    #I guess these are default settings now ¯\_(ツ)_/¯
+    f.close()
+finally:
+    f = open("Infection_Settings.txt","r")
+    X = f.readline()
+    Y = f.readline()
+    InfectChance = f.readline()
+    Healing = f.readline()
+    MinGensToUninfect = f.readline()
+    ChanceOfHealing = f.readline()
+    Immunity = f.readline()
+    ImmuneCellCount = f.readline()
 
-X=f.readline()
-Y=f.readline()
-InfectChance=f.readline()
-Healing=f.readline()
-MinGensToUninfect=f.readline()
-ChanceOfHealing=f.readline()
-Immunity=f.readline()
-ImmuneCellCount=f.readline()
+    f.close()
 
 X=int(X[2:])
 Y=int(Y[2:])
@@ -55,7 +72,10 @@ def Print_As_Grid(X,Y):
             print(Cells[n],end='')
 
 Print_As_Grid(X,Y)
-input()
+
+Seed = input("\nEnter in a seed (or leave blank for random): ")
+if Seed != '':
+    random.seed(Seed)
 
 Infected=random.randint(0,len(Cells))
 Cells[Infected]='●'
