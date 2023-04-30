@@ -6,3 +6,4 @@ MinGensToUninfect=75
 ChanceOfHealing=5
 Immunity=0
 ImmuneCellCount=12
+Delay=0.2
