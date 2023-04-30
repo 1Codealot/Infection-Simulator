@@ -1,5 +1,4 @@
-import random
-import time
+import random, time, os 
 
 Generation = 0
 
@@ -15,7 +14,8 @@ Healing=1\n\
 MinGensToUninfect=20\n\
 ChanceOfHealing=5\n\
 Immunity=1\n\
-ImmuneCellCount=12")
+ImmuneCellCount=12\n\
+Delay=0.2")
     #I guess these are default settings now ¯\_(ツ)_/¯
     f.close()
 finally:
@@ -28,6 +28,7 @@ finally:
     ChanceOfHealing = f.readline()
     Immunity = f.readline()
     ImmuneCellCount = f.readline()
+    Delay = f.readline()
 
     f.close()
 
@@ -39,6 +40,7 @@ MinGensToUninfect=int(MinGensToUninfect[18:])
 ChanceOfHealing=int(ChanceOfHealing[16:])
 Immunity=int(Immunity[9:])
 ImmuneCellCount=int(ImmuneCellCount[16:])
+Delay=float(Delay[6:])
 
 Cells=[] #Main List
 InCells=[] #Place where cells were infected
@@ -64,12 +66,23 @@ if Immunity == 1:
     Gen_Infected=(list(Gen_Infected))
 
 def Print_As_Grid(X,Y):
+    os.system('cls' if os.name == 'nt' else 'clear')
+    GriddedString = ''
     for n in range(len(Cells)):
         if n % X == 0:
-            print()
-            print(Cells[n],end='')
+            #print()
+            #print(Cells[n],end='')
+            if n != 0:
+                GriddedString += "\n"
+            GriddedString += Cells[n] + '' 
         else:
-            print(Cells[n],end='')
+            #print(Cells[n],end='')
+            GriddedString += Cells[n] + ''
+
+    print(f"{GriddedString}\n{len(InCells)} Cells infected\nGeneration: {Generation}", end="\r") #Ew
+
+    # GriddedString += "\r"
+    # print(f"{GriddedString}",end = "\r")
 
 Print_As_Grid(X,Y)
 
@@ -82,7 +95,7 @@ Cells[Infected]='●'
 Gen_Infected[Infected]=Generation
 InCells.append(Infected)
 
-print("\n\n\n\n\n")
+#print("\n\n\n\n\n")
 Print_As_Grid(X,Y)
 
 while len(InCells) != X*Y:
@@ -130,11 +143,8 @@ while len(InCells) != X*Y:
                     InCells.remove(h)
     
     Generation += 1    
-    print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
-    Print_As_Grid(X,Y)
 
-    print("\n",len(InCells), "Cells infected.")
-    print("Generation:", Generation)
-    time.sleep(0.35)
+    Print_As_Grid(X,Y)
+    time.sleep(Delay)
 
 input()
