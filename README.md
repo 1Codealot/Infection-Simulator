@@ -16,6 +16,6 @@ Runs only in console, however I may work on making it graphical.
 
 To run this on windows, download the .exe file and then run it.
 
-To run this on linux, download the .py code then in the terminal type: `python3 Infection_SourceCode.py`
+To run this on linux, download the .py code then in the terminal type: `python3 Infection.py`
 
 For mac ¯\\\_(ツ)\_/¯.
