@@ -11,6 +11,8 @@ This is code for an infection simulator.
 
 Runs only in console, however I may work on making it graphical.
 
+Video Demo: https://youtu.be/bM__FK0uzQQ
+
 
 # Running
 
