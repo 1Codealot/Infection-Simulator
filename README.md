@@ -1,7 +1,3 @@
-<div align="center">
-    ![Infection_Sim_Gif](https://github.com/1Codealot/Infection-Simulator/assets/58225804/969628b6-3cf7-48d5-8e7b-493c4bbbadb7)
-</div>
-
 ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
 
 [![Downloads](https://img.shields.io/github/downloads/1Codealot/Infection-Simulator/total.svg "Downloads")](https://github.com/1Codealot/Infection-Simulator/releases)
@@ -27,3 +23,9 @@ To run this on windows, download the .exe file and then run it.
 To run this on linux, download the .py code then in the terminal type: `python3 Infection.py`
 
 For mac idk just use this: https://www.wikihow.com/Open-Exe-Files-on-Mac ¯\\\_(ツ)\_/¯.
+
+# Small example
+
+<p align="center">
+  <img src="README_assets/Infection_Sim_Gif.gif" alt="animated" />
+</p>
