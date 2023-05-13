@@ -5,7 +5,7 @@ versions = ["V1.4","V1.5","V1.6"]
 version = ''
 
 while version.upper() not in versions:
-	version = input('What version do you want to install? "V1.4", "V1.5", "V1.6"')
+	version = input('What version do you want to install? "V1.4", "V1.5", "V1.6" ')
 
 
 link_template = f"https://github.com/1Codealot/Infection-Simulator/releases/download/{version}/Infection.{version}.zip"
@@ -36,4 +36,4 @@ with ZipFile(thePath+"\\Infection_Temp.zip", 'r') as zObject:
 print("Clean up")
 os.remove("Infection_Temp.zip")
 
-print("Finished!")
+input("Finished!")
