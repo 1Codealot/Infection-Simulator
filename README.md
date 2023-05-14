@@ -1,7 +1,7 @@
 ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
 
 [![Downloads](https://img.shields.io/github/downloads/1Codealot/Infection-Simulator/total.svg "Downloads")](https://github.com/1Codealot/Infection-Simulator/releases)
-<a href="https://github.com/1Codealot/Infection-Simulator/releases/download/V1.0-Installer/Installer.release.zip">
+<a href="https://github.com/1Codealot/Infection-Simulator/releases/download/V1.6/Infection.V1.6.zip">
     <img alt="GitHub tag (latest by date)" src="https://img.shields.io/github/v/tag/1Codealot/Infection-Simulator?label=Version">
 </a>
 <---- Click to download
