@@ -93,6 +93,10 @@ def getInfectedCellCount():
 
 
 def Print_As_Grid():
+    InfectedCellCount: int = 0
+    if Generation > 0:
+        InfectedCellCount = getInfectedCellCount()
+
     os.system('cls' if os.name == 'nt' else 'clear')
     GriddedString = ''
     for n in range(AmountOfCells):
@@ -101,7 +105,7 @@ def Print_As_Grid():
 
         GriddedString += f"{Cells[n].get_cell_type()}"
 
-    print(f"{GriddedString}\n\n\n\nGeneration: {Generation}\nCells infected: {getInfectedCellCount}\n")
+    print(f"{GriddedString}\n\n\nGeneration: {Generation}\nCells infected: {InfectedCellCount}\n")
 
 Print_As_Grid()
 
