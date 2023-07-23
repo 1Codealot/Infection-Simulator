@@ -101,7 +101,7 @@ def Print_As_Grid():
 
         GriddedString += f"{Cells[n].get_cell_type()}"
 
-    print(GriddedString)
+    print(f"{GriddedString}\n\n\n\nGeneration: {Generation}\nCells infected: {getInfectedCellCount}\n")
 
 Print_As_Grid()
 
