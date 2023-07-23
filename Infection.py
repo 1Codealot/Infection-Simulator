@@ -49,12 +49,8 @@ ImmuneRepresentation = "X"
 AmountOfCells = X*Y # Less computing time needed for making variables
 
 class Cell:
-    def __init__(self, ID, Gen_Infected = -1) -> None:
-        self.ID = ID
+    def __init__(self,Gen_Infected = -1) -> None:
         self.Gen_Infected = Gen_Infected
-
-    def set_Gen_Infected(self, Generation):
-        self.Gen_Infected = Generation
 
     def get_cell_type(self) -> str:
         if self.Gen_Infected == -2:
@@ -67,7 +63,8 @@ class Cell:
 Cells = []
 
 for x in range(AmountOfCells):
-    Cells.append(Cell(x, -1))
+    Cells.append(Cell())
+
 
 if Immunity == 1:
     # Set the generation of {ImmuneCellCount} Cells to -2 so that they are immune.
@@ -84,7 +81,7 @@ if Immunity == 1:
         Cells[immuneCell].Gen_Infected = -2
 
 
-def getInfectedCellCount():
+def getInfectedCellCount() -> int:
     count = 0
     for i in Cells:
         if i.Gen_Infected >= 0:
@@ -93,6 +90,7 @@ def getInfectedCellCount():
 
 
 def Print_As_Grid():
+
     InfectedCellCount: int = 0
     if Generation > 0:
         InfectedCellCount = getInfectedCellCount()
@@ -114,53 +112,49 @@ if Seed != '':
     random.seed(Seed)
 
 # Infecting 'patient zero' (for lack of better term.)
-Cells[random.randint(0, AmountOfCells)].Gen_Infected = Generation
+Cells[random.randint(0, AmountOfCells - 1)].Gen_Infected = Generation
 
 
 Print_As_Grid()
+time.sleep(Delay)
 
-## Infecting logic
-## DOES NOT WORK CURRENTLY, DO NOT USE
+while getInfectedCellCount() != AmountOfCells:
+    for C in range(AmountOfCells):
+        if (currentCell := Cells[C]).Gen_Infected >= 0: # currentCell stores the Cell object.
 
-while len(InCells) != AmountOfCells:
-    for infectiousCell in InCells:
+            # Right
 
-        ## Infect to the right
+            if C != AmountOfCells - 1 and C % X != X-1 and random.randint(1, InfectChance) == 1 \
+              and Cells[C+1].Gen_Infected == -1 and currentCell.Gen_Infected != Generation:
+                Cells[C+1].Gen_Infected = Generation
 
-        if infectiousCell != X * Y - 1 and infectiousCell % X != X - 1 and random.randint(1, InfectChance) == 1 and Gen_Infected[infectiousCell + 1] == -1: # Stops it infecting after the last cell and stops it wrapping around then it chooses randomly if it wants to infect and then if the cell it trys to infect is not already infected or immune.
-            # It's probably better to do this in multiple if statements for readability or in a different order to be quicker but I'm not really sure how to test but I also don't care, its python, no one cares of its slow.
-            Gen_Infected[infectiousCell + 1] = Generation
-            InCells.append(infectiousCell + 1)
+            # Down
 
-        ## Infects downwards
+            if C <= AmountOfCells - X - 1 and random.randint(1, InfectChance) == 1 \
+              and Cells[C+X].Gen_Infected == -1 and currentCell.Gen_Infected != Generation:
+                Cells[C+X].Gen_Infected = Generation
 
-        if infectiousCell <= (X * Y - X) - 1 and random.randint(1, InfectChance) == 1 and Gen_Infected[infectiousCell + X] == -1:
-            Gen_Infected[infectiousCell + X] = Generation
-            InCells.append(infectiousCell + X)
+            # Left
 
-        ## Infects to the left
+            if C >= 1 and C % X != 0 and random.randint(1, InfectChance) == 1 \
+              and Cells[C-1].Gen_Infected == -1 and currentCell.Gen_Infected != Generation:
+                Cells[C-1].Gen_Infected = Generation
 
-        if infectiousCell >= 1 and infectiousCell % X != 0 and random.randint(1, InfectChance) == 1 and Gen_Infected[infectiousCell - 1] == -1:
-            Gen_Infected[infectiousCell - 1] = Generation
-            InCells.append(infectiousCell - 1)
+            # Up
 
-        ## Infects upwards
+            if C >= X + 1 and random.randint(1, InfectChance) == 1 \
+              and Cells[C-X].Gen_Infected == -1 and currentCell.Gen_Infected != Generation:
+                Cells[C-X].Gen_Infected = Generation
 
-        if infectiousCell >= X + 1 and random.randint(1, InfectChance) == 1 and Gen_Infected[infectiousCell - X] == -1:
-            Gen_Infected[infectiousCell - X] = Generation
-            InCells.append(infectiousCell - X)
+            # Healing
 
-
-    if Healing == 1:
-        for h in InCells:
-            if Generation - Gen_Infected[h] >= MinGensToUninfect and len(InCells) >= 10 and random.randint(1,ChanceOfHealing) == 1:
-                Gen_Infected[h] = -1
-                InCells.remove(h)
-
+            if Healing == 1:
+                if Generation - Cells[C].Gen_Infected == MinGensToUninfect and random.randint(1, ChanceOfHealing) == 1:
+                    Cells[C].Gen_Infected = - 1
 
     Generation += 1
 
-    Print_As_Grid(X,Y)
+    Print_As_Grid()
     time.sleep(Delay)
 
 input()
