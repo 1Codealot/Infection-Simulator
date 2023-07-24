@@ -9,10 +9,10 @@ except:
     f = open("Infection_Settings.txt","a")
     f.write("X=20\n\
 Y=20\n\
-InfectChance=5\n\
+InfectChance=20\n\
 Healing=1\n\
 MinGensToUninfect=20\n\
-ChanceOfHealing=5\n\
+ChanceOfHealing=40\n\
 Immunity=1\n\
 ImmuneCellCount=12\n\
 Delay=0.2")
@@ -59,6 +59,16 @@ class Cell:
             return UnInfectedRepresentation
         else:
             return InfectedRepresentation
+
+    def infect(self):
+        # Part of Infection logic included: random, not already infected
+        if  self.Gen_Infected!= Generation and random.randint(1, 100) <= int(InfectChance): # I don't know why I have to cast InfectChance here but for some reason I do
+            self.Gen_Infected = Generation
+
+    def heal(self): #                     THe issue was an `==` and not `>=` rhjkwehsnithvgkjklvjikfryhuvgbeiyo
+        if Generation - self.Gen_Infected >= int(MinGensToUninfect) and random.randint(1, 100) <= int(ChanceOfHealing): # Also more nonsensical type casting
+            self.Gen_Infected = -1
+
 
 Cells = []
 
@@ -124,33 +134,28 @@ while getInfectedCellCount() != AmountOfCells:
 
             # Right
 
-            if C != AmountOfCells - 1 and C % X != X-1 and random.randint(1, InfectChance) == 1 \
-              and Cells[C+1].Gen_Infected == -1 and currentCell.Gen_Infected != Generation:
-                Cells[C+1].Gen_Infected = Generation
+            if C != AmountOfCells - 1 and C % X != X-1 and Cells[C+1].Gen_Infected == -1 :
+                Cells[C+1].infect()
 
             # Down
 
-            if C <= AmountOfCells - X - 1 and random.randint(1, InfectChance) == 1 \
-              and Cells[C+X].Gen_Infected == -1 and currentCell.Gen_Infected != Generation:
-                Cells[C+X].Gen_Infected = Generation
+            if C <= AmountOfCells - X - 1 and Cells[C+X].Gen_Infected == -1:
+                Cells[C+X].infect()
 
             # Left
 
-            if C >= 1 and C % X != 0 and random.randint(1, InfectChance) == 1 \
-              and Cells[C-1].Gen_Infected == -1 and currentCell.Gen_Infected != Generation:
-                Cells[C-1].Gen_Infected = Generation
+            if C >= 1 and C % X != 0 and Cells[C-1].Gen_Infected == -1:
+                Cells[C-1].infect()
 
             # Up
 
-            if C >= X + 1 and random.randint(1, InfectChance) == 1 \
-              and Cells[C-X].Gen_Infected == -1 and currentCell.Gen_Infected != Generation:
-                Cells[C-X].Gen_Infected = Generation
+            if C >= X + 1 and Cells[C-X].Gen_Infected == -1:
+                Cells[C-X].infect()
 
             # Healing
 
             if Healing == 1:
-                if Generation - Cells[C].Gen_Infected == MinGensToUninfect and random.randint(1, ChanceOfHealing) == 1:
-                    Cells[C].Gen_Infected = - 1
+                Cells[C].heal()
 
     Generation += 1
 
