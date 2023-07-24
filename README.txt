@@ -4,5 +4,7 @@ For Infection_Settings there are important things to know:
 (Example: Setting=12)
 2. For the X and Y values, the most of the screen (for me) it can take up is X=210 Y=45 but you will have to fullscreen it and scroll up a bit.
 3. For Healing, if you want it to be on (which it is on default) it must be 1 (Healing=1) because it wouldn't work as a string (like Healing =True). If you want to turn it off, put any integer (otherwise it'll crash).
+4. Delay is measured in seconds but doesn't have to be an integer. (e.g. Delay=0.2)
+5. The settings: "InfectChance" and "ChanceOfHealing" are as percentages.
 
 -1codealot.
