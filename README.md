@@ -4,10 +4,15 @@
 <a href="https://github.com/1Codealot/Infection-Simulator/releases/download/V1.6/Infection.V1.6.zip">
     <img alt="GitHub tag (latest by date)" src="https://img.shields.io/github/v/tag/1Codealot/Infection-Simulator?label=Version">
 </a>
-<---- Click to download
+<---- Click to download 
+<p>
+  <img src="README_assets/Infection_Image.png" />
+</p>
+
+
+
 
 # Infection-Simulator
-
 
 This is code for an infection simulator.
 
