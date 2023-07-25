@@ -15,7 +15,9 @@ MinGensToUninfect=20\n\
 ChanceOfHealing=40\n\
 Immunity=1\n\
 ImmuneCellCount=12\n\
-Delay=0.2")
+ImmunityAfterHealingLength=10\n\
+Delay=0.2\
+")
     #I guess these are default settings now ¯\_(ツ)_/¯
     f.close()
 finally:
@@ -28,6 +30,7 @@ finally:
     ChanceOfHealing = f.readline()
     Immunity = f.readline()
     ImmuneCellCount = f.readline()
+    ImmunityAfterHealingLength = f.readline()
     Delay = f.readline()
 
     f.close()
@@ -40,7 +43,9 @@ MinGensToUninfect=int(MinGensToUninfect[18:])
 ChanceOfHealing=int(ChanceOfHealing[16:])
 Immunity=int(Immunity[9:])
 ImmuneCellCount=int(ImmuneCellCount[16:])
+ImmunityAfterHealingLength=int(ImmunityAfterHealingLength[27:])
 Delay=float(Delay[6:])
+
 
 InfectedRepresentation = "●"
 UnInfectedRepresentation = "○"
@@ -51,6 +56,7 @@ AmountOfCells = X*Y # Less computing time needed for making variables
 class Cell:
     def __init__(self,Gen_Infected = -1) -> None:
         self.Gen_Infected = Gen_Infected
+        self.last_time_infected = 0
 
     def get_cell_type(self) -> str:
         if self.Gen_Infected == -2:
@@ -63,11 +69,16 @@ class Cell:
     def infect(self):
         # Part of Infection logic included: random, not already infected
         if  self.Gen_Infected!= Generation and random.randint(1, 100) <= int(InfectChance): # I don't know why I have to cast InfectChance here but for some reason I do
-            self.Gen_Infected = Generation
+            if Generation - self.last_time_infected >= int(ImmunityAfterHealingLength):
+                self.Gen_Infected = Generation
+
+            elif Generation <= int(ImmunityAfterHealingLength):
+                self.Gen_Infected = Generation
 
     def heal(self): #                     THe issue was an `==` and not `>=` rhjkwehsnithvgkjklvjikfryhuvgbeiyo
         if Generation - self.Gen_Infected >= int(MinGensToUninfect) and random.randint(1, 100) <= int(ChanceOfHealing): # Also more nonsensical type casting
             self.Gen_Infected = -1
+            self.last_time_infected = Generation
 
 
 Cells = []
@@ -134,7 +145,7 @@ while getInfectedCellCount() != AmountOfCells:
 
             # Right
 
-            if C != AmountOfCells - 1 and C % X != X-1 and Cells[C+1].Gen_Infected == -1 :
+            if C != AmountOfCells - 1 and C % X != X-1 and Cells[C+1].Gen_Infected == -1:
                 Cells[C+1].infect()
 
             # Down
