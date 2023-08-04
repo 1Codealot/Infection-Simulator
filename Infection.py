@@ -1,4 +1,14 @@
-import random, time, os
+import random, time, os, sys
+
+## Seed stuff
+if len(sys.argv) >= 2:
+    random.seed(sys.argv[1])
+else:
+    Seed = input("\nEnter in a seed (or leave blank for random): ")
+    if Seed != '':
+        random.seed(Seed)
+    else:
+        random.seed(random.randint(0, 999_999_999_999_999_999_999_999_999_999_999)) # nine hundred ninety-nine nonillion nine hundred ninety-nine octillion... Should be enough lol
 
 Generation = 0
 
@@ -46,11 +56,6 @@ ImmuneCellCount=int(ImmuneCellCount[16:])
 ImmunityAfterHealingLength=int(ImmunityAfterHealingLength[27:])
 Delay=float(Delay[6:])
 
-
-InfectedRepresentation = "●"
-UnInfectedRepresentation = "○"
-ImmuneRepresentation = "X"
-
 AmountOfCells = X*Y # Less computing time needed for making variables
 
 class Cell:
@@ -58,13 +63,17 @@ class Cell:
         self.Gen_Infected = Gen_Infected
         self.last_time_infected = 0
 
+        self.InfectedRepresentation = "●"
+        self.UnInfectedRepresentation = "○"
+        self.ImmuneRepresentation = "X"
+
     def get_cell_type(self) -> str:
         if self.Gen_Infected == -2:
-            return ImmuneRepresentation
+            return self.ImmuneRepresentation
         elif self.Gen_Infected == -1:
-            return UnInfectedRepresentation
+            return self.UnInfectedRepresentation
         else:
-            return InfectedRepresentation
+            return self.InfectedRepresentation
 
     def infect(self):
         # Part of Infection logic included: random, not already infected
@@ -110,13 +119,12 @@ def getInfectedCellCount() -> int:
     return count
 
 
-def Print_As_Grid():
+def getAsGrid(shouldOutput = True):
 
     InfectedCellCount: int = 0
-    if Generation > 0:
+    if Generation >= 0:
         InfectedCellCount = getInfectedCellCount()
 
-    os.system('cls' if os.name == 'nt' else 'clear')
     GriddedString = ''
     for n in range(AmountOfCells):
         if n % X == 0:
@@ -124,24 +132,24 @@ def Print_As_Grid():
 
         GriddedString += f"{Cells[n].get_cell_type()}"
 
-    print(f"{GriddedString}\n\n\nGeneration: {Generation}\nCells infected: {InfectedCellCount}\n")
+    if shouldOutput:
+        os.system('cls' if os.name == 'nt' else 'clear')
+        print(f"{GriddedString}\n\n\nGeneration: {Generation}\nCells infected: {InfectedCellCount}\n")
 
-Print_As_Grid()
+    else: return GriddedString
 
-Seed = input("\nEnter in a seed (or leave blank for random): ")
-if Seed != '':
-    random.seed(Seed)
+getAsGrid()
 
 # Infecting 'patient zero' (for lack of better term.)
 Cells[random.randint(0, AmountOfCells - 1)].Gen_Infected = Generation
 
 
-Print_As_Grid()
+getAsGrid()
 time.sleep(Delay)
 
-while getInfectedCellCount() != AmountOfCells:
+def infectionLoopAndHealing():
     for C in range(AmountOfCells):
-        if (currentCell := Cells[C]).Gen_Infected >= 0: # currentCell stores the Cell object.
+        if Cells[C].Gen_Infected >= 0: # currentCell stores the Cell object.
 
             # Right
 
@@ -168,9 +176,15 @@ while getInfectedCellCount() != AmountOfCells:
             if Healing == 1:
                 Cells[C].heal()
 
-    Generation += 1
 
-    Print_As_Grid()
-    time.sleep(Delay)
+while ((cellCount:=getInfectedCellCount()) != AmountOfCells and Healing == 0) or (cellCount != 0):
+    startTime = time.time()
+    Generation += 1
+    infectionLoopAndHealing()
+
+    getAsGrid()
+
+    if (finalDelay:= time.time()-startTime) >= 0:
+        time.sleep(finalDelay)
 
 input()
