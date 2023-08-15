@@ -168,7 +168,7 @@ def main():
     # No args because reasons.
     while ((cellCount:=getInfectedCellCount()) != AmountOfCells and Healing == 0) or (cellCount != 0):
         startTime = time.time()
-        global Generation 
+        global Generation # This was a solution to a problem I had.
         Generation += 1
         infecting()
         if Healing == 1:
@@ -176,7 +176,7 @@ def main():
         getAsGrid()
 
         if (finalDelay:= time.time()-startTime) <= Delay:
-            time.sleep(finalDelay)
+            time.sleep(Delay-finalDelay)
 
 if __name__ == '__main__':
 
