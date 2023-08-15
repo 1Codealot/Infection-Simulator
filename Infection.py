@@ -1,21 +1,12 @@
 import random, time, os, sys
 
-## Seed stuff
-if len(sys.argv) >= 2:
-    random.seed(sys.argv[1])
-else:
-    Seed = input("\nEnter in a seed (or leave blank for random): ")
-    if Seed != '':
-        random.seed(Seed)
-    else:
-        random.seed(random.randint(0, 999_999_999_999_999_999_999_999_999_999_999)) # nine hundred ninety-nine nonillion nine hundred ninety-nine octillion... Should be enough lol
-
 Generation = 0
 
 try:
     f = open("Infection_Settings.txt","r")
     f.close()
-except:
+except FileNotFoundError:
+    print("Warning: Infection_Settings.txt file not found. Creating new file with default settings; you can change these later.")
     f = open("Infection_Settings.txt","a")
     f.write("X=20\n\
 Y=20\n\
@@ -90,7 +81,7 @@ class Cell:
             self.last_time_infected = Generation
 
 
-Cells = []
+Cells:list[Cell] = []
 
 for x in range(AmountOfCells):
     Cells.append(Cell())
@@ -104,7 +95,7 @@ if Immunity == 1:
     immuneCell = random.randint(0, AmountOfCells)
     Cells[immuneCell].Gen_Infected = -2
 
-    for n in range(ImmuneCellCount - 1):
+    for j in range(ImmuneCellCount - 1):
         while Cells[immuneCell].Gen_Infected == -2:
             immuneCell = random.randint(0, AmountOfCells)
 
@@ -143,11 +134,7 @@ getAsGrid()
 # Infecting 'patient zero' (for lack of better term.)
 Cells[random.randint(0, AmountOfCells - 1)].Gen_Infected = Generation
 
-
-getAsGrid()
-time.sleep(Delay)
-
-def infectionLoopAndHealing():
+def infecting():
     for C in range(AmountOfCells):
         if Cells[C].Gen_Infected >= 0: # currentCell stores the Cell object.
 
@@ -171,20 +158,36 @@ def infectionLoopAndHealing():
             if C >= X + 1 and Cells[C-X].Gen_Infected == -1:
                 Cells[C-X].infect()
 
-            # Healing
+def healing():
+    for C in range(AmountOfCells):
+        if Cells[C].Gen_Infected >= 0: # currentCell stores the Cell object.
+            Cells[C].heal()
 
-            if Healing == 1:
-                Cells[C].heal()
+def main():
+    # I need to make a main function so that I can call it on a button press.
+    # No args because reasons.
+    while ((cellCount:=getInfectedCellCount()) != AmountOfCells and Healing == 0) or (cellCount != 0):
+        startTime = time.time()
+        global Generation 
+        Generation += 1
+        infecting()
+        if Healing == 1:
+            healing()
+        getAsGrid()
 
+        if (finalDelay:= time.time()-startTime) <= Delay:
+            time.sleep(finalDelay)
 
-while ((cellCount:=getInfectedCellCount()) != AmountOfCells and Healing == 0) or (cellCount != 0):
-    startTime = time.time()
-    Generation += 1
-    infectionLoopAndHealing()
+if __name__ == '__main__':
 
-    getAsGrid()
+    ## Seed stuff
+    if len(sys.argv) >= 2:
+        random.seed(sys.argv[1])
+    else:
+        Seed = input("\nEnter in a seed (or leave blank for random): ")
+        if Seed != '':
+            random.seed(Seed)
+        else:
+            random.seed(random.randint(0, 999_999_999_999_999_999_999_999_999_999_999)) # nine hundred ninety-nine nonillion nine hundred ninety-nine octillion... Should be enough lol
 
-    if (finalDelay:= time.time()-startTime) >= 0:
-        time.sleep(finalDelay)
-
-input()
+    main()
