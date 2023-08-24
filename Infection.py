@@ -81,7 +81,7 @@ class Cell:
             self.last_time_infected = Generation
 
 
-Cells:list[Cell] = []
+Cells: list[Cell] = []
 
 for x in range(AmountOfCells):
     Cells.append(Cell())
@@ -135,48 +135,51 @@ getAsGrid()
 Cells[random.randint(0, AmountOfCells - 1)].Gen_Infected = Generation
 
 def infecting():
-    for C in range(AmountOfCells):
-        if Cells[C].Gen_Infected >= 0: # currentCell stores the Cell object.
+    for currentCell in range(AmountOfCells):
+        if Cells[currentCell].Gen_Infected >= 0 and Cells[currentCell].Gen_Infected != Generation: # currentCell stores the Cell object.
 
             # Right
-
-            if C != AmountOfCells - 1 and C % X != X-1 and Cells[C+1].Gen_Infected == -1:
-                Cells[C+1].infect()
+            #  Stops outOfIndexError                  Stops wrapping around        Makes sure that Cell is uninfected
+            if (currentCell != AmountOfCells - 1) and (currentCell % X != X-1) and (Cells[currentCell+1].Gen_Infected == -1):
+                Cells[currentCell+1].infect()
 
             # Down
-
-            if C <= AmountOfCells - X - 1 and Cells[C+X].Gen_Infected == -1:
-                Cells[C+X].infect()
+            #  Stops outOfIndexError                      Makes sure that Cell is uninfected
+            if (currentCell <= AmountOfCells - X - 1) and (Cells[currentCell+X].Gen_Infected == -1):
+                Cells[currentCell+X].infect()
 
             # Left
-
-            if C >= 1 and C % X != 0 and Cells[C-1].Gen_Infected == -1:
-                Cells[C-1].infect()
+            #  Stops outOfIndexError  Stops wrapping around      Makes sure that Cell is uninfected
+            if (currentCell >= 1) and (currentCell % X != 0) and (Cells[currentCell-1].Gen_Infected == -1):
+                Cells[currentCell-1].infect()
 
             # Up
-
-            if C >= X + 1 and Cells[C-X].Gen_Infected == -1:
-                Cells[C-X].infect()
+            #  Stops outOfIndexError      Makes sure that Cell is uninfected
+            if (currentCell >= X + 1) and (Cells[currentCell-X].Gen_Infected == -1):
+                Cells[currentCell-X].infect()
 
 def healing():
-    for C in range(AmountOfCells):
-        if Cells[C].Gen_Infected >= 0: # currentCell stores the Cell object.
-            Cells[C].heal()
+    for currentCell in range(AmountOfCells):
+        if Cells[currentCell].Gen_Infected >= 0: # currentCell stores the Cell object.
+            Cells[currentCell].heal()
 
 def main():
+    global Generation # This was a solution to a problem I had.
     # I need to make a main function so that I can call it on a button press.
     # No args because reasons.
     while ((cellCount:=getInfectedCellCount()) != AmountOfCells and Healing == 0) or (cellCount != 0):
         startTime = time.time()
-        global Generation # This was a solution to a problem I had.
-        Generation += 1
+
         infecting()
+        Generation += 1
         if Healing == 1:
             healing()
         getAsGrid()
 
         if (finalDelay:= time.time()-startTime) <= Delay:
             time.sleep(Delay-finalDelay)
+        elif Delay < 0:
+            input()
 
 if __name__ == '__main__':
 
