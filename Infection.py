@@ -191,6 +191,7 @@ if __name__ == '__main__':
         if Seed != '':
             random.seed(Seed)
         else:
-            random.seed(random.randint(0, 999_999_999_999_999_999_999_999_999_999_999)) # nine hundred ninety-nine nonillion nine hundred ninety-nine octillion... Should be enough lol
+            Seed = time.time()
+            random.seed(Seed)
 
     main()
