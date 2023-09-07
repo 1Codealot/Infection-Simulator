@@ -17,7 +17,8 @@ ChanceOfHealing=40\n\
 Immunity=1\n\
 ImmuneCellCount=12\n\
 ImmunityAfterHealingLength=10\n\
-Delay=0.2\
+Delay=0.2\n\
+ShouldUseColours=1\
 ")
     #I guess these are default settings now ¯\_(ツ)_/¯
     f.close()
@@ -33,6 +34,7 @@ finally:
     ImmuneCellCount = f.readline()
     ImmunityAfterHealingLength = f.readline()
     Delay = f.readline()
+    ShouldUseColours = f.readline()
 
     f.close()
 
@@ -46,6 +48,7 @@ Immunity=int(Immunity[9:])
 ImmuneCellCount=int(ImmuneCellCount[16:])
 ImmunityAfterHealingLength=int(ImmunityAfterHealingLength[27:])
 Delay=float(Delay[6:])
+ShouldUseColours=int(ShouldUseColours[17:])
 
 AmountOfCells = X*Y # Less computing time needed for making variables
 
@@ -54,9 +57,15 @@ class Cell:
         self.Gen_Infected = Gen_Infected
         self.last_time_infected = 0
 
-        self.InfectedRepresentation = "●"
-        self.UnInfectedRepresentation = "○"
-        self.ImmuneRepresentation = "X"
+        if ShouldUseColours == 1:
+            self.InfectedRepresentation = '\x1b[0;31;40m' + "●" + '\x1b[0m'
+            self.UnInfectedRepresentation = '\x1b[0;32;40m' + "○" + '\x1b[0m'
+            self.ImmuneRepresentation = '\x1b[0;34;40m' + "X" + '\x1b[0m'
+        else:
+            self.InfectedRepresentation = "●"
+            self.UnInfectedRepresentation = "○"
+            self.ImmuneRepresentation = "X"
+
 
     def get_cell_type(self) -> str:
         if self.Gen_Infected == -2:
