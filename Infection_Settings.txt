@@ -1,9 +1,11 @@
-X=60
-Y=25
-InfectChance=4
+X=20
+Y=20
+InfectChance=20
 Healing=1
-MinGensToUninfect=75
-ChanceOfHealing=5
-Immunity=0
+MinGensToUninfect=20
+ChanceOfHealing=40
+Immunity=1
 ImmuneCellCount=12
+ImmunityAfterHealingLength=10
 Delay=0.2
+ShouldUseColours=0
